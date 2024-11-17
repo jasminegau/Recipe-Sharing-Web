@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="friends.css">
+    <title>Friends & Profiles</title>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <div class="topnav">
+        <div class="home-img">
+            <img src="pfp.jpg" alt="Profile Picture">
+        </div>
+        <div class="center-container">
+            <input type="text" id="searchBar" placeholder="Search for friends or recipes...">
+            <button id="searchBtn">Search</button>
+        </div>
+        <a class="recipe" href="#">+Recipe</a>
+    </div>
+
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>Your Friends</h2>
+            <div class="friends-list">
+                <div class="friend">
+                    <img src="pfp.jpg" alt="Friend 1">
+                    <span>Friend 1</span>
+                    <div class="friend-actions">
+                        <button class="view-profile-btn">View Profile</button>
+                        <button class="remove-friend-btn">Remove</button>
+                    </div>
+                </div>
+                <div class="friend">
+                    <img src="pfp.jpg" alt="Friend 2">
+                    <span>Friend 2</span>
+                    <div class="friend-actions">
+                        <button class="view-profile-btn">View Profile</button>
+                        <button class="remove-friend-btn">Remove</button>
+                    </div>
+                </div>
+            </div>
+            <button class="add-friend-btn">Add Friend</button>
+
+            <h3>Mutual Friends</h3>
+            <ul class="mutual-friends">
+                <li>Mutual Friend 1</li>
+                <li>Mutual Friend 2</li>
+            </ul>
+
+            <h3>Suggested Friends</h3>
+            <ul class="suggested-friends">
+                <li>
+                    Suggested Friend 1 
+                    <button class="add-friend-btn">Add</button>
+                </li>
+                <li>
+                    Suggested Friend 2 
+                    <button class="add-friend-btn">Add</button>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <section class="suggested-posts">
+                <h1>Suggested Posts</h1>
+                <div class="post">
+                    <h3>Friend's Recipe 1</h3>
+                    <p>Posted by Friend 1</p>
+                </div>
+                <div class="post">
+                    <h3>Friend's Recipe 2</h3>
+                    <p>Posted by Friend 2</p>
+                </div>
+            </section>
+
+            <section class="friend-profile">
+                <h1>Friend's Recipes</h1>
+                <div class="friend-recipes">
+                    <div class="friend-recipe">
+                        <h4>Recipe 1</h4>
+                        <p>Description of recipe 1...</p>
+                    </div>
+                    <div class="friend-recipe">
+                        <h4>Recipe 2</h4>
+                        <p>Description of recipe 2...</p>
+                    </div>
+                    <div class="friend-recipe">
+                        <h4>Recipe 3</h4>
+                        <p>Description of recipe 3...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
