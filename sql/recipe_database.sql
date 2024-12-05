@@ -13,6 +13,6 @@ CREATE table users (
 CREATE table recipes (
 	id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(100),
-    recipeType VARCHAR(100),
+    category VARCHAR(100),
     instructions VARCHAR(1000)
 );
