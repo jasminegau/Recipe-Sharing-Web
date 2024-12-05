@@ -69,25 +69,6 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.friends-list .friend {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.friends-list img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-.friend-actions {
-    margin-left: auto;
-    display: flex;
-    gap: 5px;
-}
-
 .add-friend-btn,
 .remove-friend-btn,
 .view-profile-btn {

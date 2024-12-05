@@ -53,16 +53,11 @@ body {
     }
 }
 
-.recipe {
-    padding: 1rem;
-    background-color: green;
-    border-radius: 3rem;
-    font-size: 1rem;
-    color: white;
-    /* letter-spacing: 0.3rem; */
-    font-weight: 600;
-    transition: 0.3s ease;
-    cursor: pointer;
+.content {
+	width: 100%;
+	height: fit-content;
+	display: flex;
+	justify-content: center;
 }
 
 .home-img{
@@ -94,83 +89,15 @@ body {
 }
 
 .recipes{
+	display: grid;
+	justify-items: center;
+	justify-content: center;
+	grid-template-columns: repeat(auto-fill, 300px);
+	gap: 20px;
     background-color: white;
-    float: left;
-    margin-left: 40rem;
-    margin-top: 1rem;
-    padding: 2rem;
-    border-radius: 2%;
     height: 700px;
     border: 0.13rem solid rgb(233, 233, 233);
-    width: 60%;
-}
-
-
-.box1{
-    float: left;
-    border: 0.13rem solid rgb(233, 233, 233);
-    height: 220px; 
-    width: 35%;
-    border-radius: 2%;
-    
-}
-
-.yellow{
-    background-color: yellow;
-    /* float: top; */
-    height: 130px;
-    /* border-radius: 10%; */
-    border-radius: 2%;
-}
-
-.box2{
-    float: left;
-    border: 0.13rem solid rgb(233, 233, 233);
-    height: 220px; 
-    width: 35%;
-    border-radius: 2%;
-    margin-left: 10rem;
-    
-}
-
-.red{
-    background-color: red;
-    height: 130px;
-    border-radius: 2%;
-}
-
-
-.box3{
-    float: left;
-    border: 0.13rem solid rgb(233, 233, 233);
-    height: 220px; 
-    width: 35%;
-    border-radius: 2%;
-    margin-top: 10rem;
-    
-}
-
-.green{
-    background-color: green;
-    height: 130px;
-    border-radius: 2%;
-}
-
-.box4{
-    float: left;
-    border: 0.13rem solid rgb(233, 233, 233);
-    height: 220px; 
-    width: 35%;
-    border-radius: 2%;
-    margin-top: 10rem;
-    margin-left: 10rem;
-    
-}
-
-.purple{
-    background-color: purple;
-    height: 130px;
-    border-radius: 2%;
+    width: 70%;
 }
 
 .friends-img img{
