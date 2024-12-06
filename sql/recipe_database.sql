@@ -14,5 +14,7 @@ CREATE table recipes (
 	id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(100),
     category VARCHAR(100),
-    instructions VARCHAR(1000)
+    instructions VARCHAR(1000),
+    author INT,
+    FOREIGN KEY (author) REFERENCES users(id)
 );

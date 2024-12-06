@@ -100,30 +100,6 @@ public class Login extends HttpServlet {
 		}
 	}
 	
-	//recipe object for each individual saved recipe
-	class Recipe {
-		int id;
-		String title;
-		String category;
-		String instructions;
-		
-		Recipe(int id, String title, String category, String instructions) {
-			this.id = id;
-			this.title = title;
-			this.category = category;
-			this.instructions = instructions;
-		}
-	}
-	
-	//error class to send error data such as invalid username or SQLException
-	class Error {
-		String error;
-		
-		Error(String err) {
-			this.error = err;
-		}
-	}
-	
 	String getUserInfo(String username, Connection con, ResultSet rs) throws SQLException{
 		
 		//defining variables
@@ -134,15 +110,15 @@ public class Login extends HttpServlet {
 		try {
 			JsonArray recipeIds = gson.fromJson(rs.getString("savedRecipies"), JsonArray.class);
 			for (int i = 0; i < recipeIds.size(); i++) {
-				PreparedStatement stmt = con.prepareStatement("SELECT * FROM recipes WHERE id = ?");
+				PreparedStatement stmt = con.prepareStatement("SELECT r.id, r.title, r.category, u.username FROM recipes r, users u WHERE r.id = ? AND r.author = u.id");
 				stmt.setInt(1, recipeIds.get(i).getAsInt());
 				ResultSet result = stmt.executeQuery();
 				if (result.next()) {
 					int id = result.getInt("id");
 					String title = result.getString("title");
 					String category = result.getString("category");
-					String instructions = result.getString("instructions");
-					recipes.add(new Recipe(id, title, category, instructions));
+					String author = result.getString("author");
+					recipes.add(new Recipe(id, title, category, author));
 				}
 			}
 		} catch (JsonSyntaxException err) {
@@ -156,4 +132,28 @@ public class Login extends HttpServlet {
 		return gson.toJson(user);
 	}
 
+}
+
+//recipe object for each individual saved recipe
+class Recipe {
+	int id;
+	String title;
+	String category;
+	String author;
+	
+	Recipe(int id, String title, String category, String author) {
+		this.id = id;
+		this.title = title;
+		this.category = category;
+		this.author = author;
+	}
+}
+
+//error class to send error data such as invalid username or SQLException
+class Error {
+	String error;
+	
+	Error(String err) {
+		this.error = err;
+	}
 }
