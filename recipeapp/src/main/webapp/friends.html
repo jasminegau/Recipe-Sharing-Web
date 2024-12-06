@@ -4,96 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/friends.css">
-    <title>Friends and Profiles</title>
+    <title>Friends</title>
+    <script src="js/friends.js"></script>
 </head>
 <body>
     <!-- Top Navigation -->
     <div class="topnav">
         <div class="home-img">
-            <img src="pfp.jpg" alt="Profile Picture">
+            <img src="assets/tt.jpg" alt="Profile Picture" onlcik = "Login.html">
+        </div>
+        <div class="profile-name">
+            <span>Tommy Trojan</span>
         </div>
         <div class="center-container">
-            <input type="text" id="searchBar" placeholder="Search for friends or recipes...">
-            <button id="searchBtn">Search</button>
+            <input type="text" id="searchBar" placeholder="Search for friends...">
+            <button id="searchBtn" onclick="searchFriends()">Search</button>
         </div>
-        <a class="recipe" href="#">+Recipe</a>
     </div>
 
     <div class="layout">
-        <!-- Sidebar -->
-        <aside class="sidebar">
+        <!-- Friends Section -->
+        <div class="friends-section">
             <h2>Your Friends</h2>
-            <div class="friends-list">
-                <div class="friend">
-                    <img src="assets/pfp.jpg" alt="Friend 1">
-                    <span>Friend 1</span>
+            <ul class="friends-list" id="friendsList">
+                <li class="friend">
+                    <img src="assets/pfp.jpg" alt="Aarav Patel">
+                    <span>Aarav Patel</span>
                     <div class="friend-actions">
                         <button class="view-profile-btn">View Profile</button>
                         <button class="remove-friend-btn">Remove</button>
                     </div>
-                </div>
-                <div class="friend">
-                    <img src="assets/pfp.jpg" alt="Friend 2">
-                    <span>Friend 2</span>
+                </li>
+                <li class="friend">
+                    <img src="assets/pfp.jpg" alt="Naomi Tanaka">
+                    <span>Naomi Tanaka</span>
                     <div class="friend-actions">
                         <button class="view-profile-btn">View Profile</button>
                         <button class="remove-friend-btn">Remove</button>
                     </div>
-                </div>
-            </div>
-            <button class="add-friend-btn">Add Friend</button>
+                </li>
+            </ul>
 
             <h3>Mutual Friends</h3>
             <ul class="mutual-friends">
-                <li>Mutual Friend 1</li>
-                <li>Mutual Friend 2</li>
+                <li>Sophia Carter</li>
+                <li>Ethan Martinez</li>
             </ul>
 
             <h3>Suggested Friends</h3>
-            <ul class="suggested-friends">
+            <ul class="suggested-friends" id="suggestedFriends">
                 <li>
-                    Suggested Friend 1 
-                    <button class="add-friend-btn">Add</button>
+                    Liam Johnson
+                    <button class="add-friend-btn" onclick="addToPending('Liam Johnson')">Request</button>
+                    <button class="remove-suggested-btn" onclick="removeSuggestedFriend('Liam Johnson')">Remove</button>
                 </li>
                 <li>
-                    Suggested Friend 2 
-                    <button class="add-friend-btn">Add</button>
+                    Ava Brown
+                    <button class="add-friend-btn" onclick="addToPending('Ava Brown')">Request</button>
+                    <button class="remove-suggested-btn" onclick="removeSuggestedFriend('Ava Brown')">Remove</button>
                 </li>
             </ul>
-        </aside>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <section class="suggested-posts">
-                <h1>Suggested Posts</h1>
-                <div class="post">
-                    <h3>Friend's Recipe 1</h3>
-                    <p>Posted by Friend 1</p>
-                </div>
-                <div class="post">
-                    <h3>Friend's Recipe 2</h3>
-                    <p>Posted by Friend 2</p>
-                </div>
-            </section>
-
-            <section class="friend-profile">
-                <h1>Friend's Recipes</h1>
-                <div class="friend-recipes">
-                    <div class="friend-recipe">
-                        <h4>Recipe 1</h4>
-                        <p>Description of recipe 1...</p>
-                    </div>
-                    <div class="friend-recipe">
-                        <h4>Recipe 2</h4>
-                        <p>Description of recipe 2...</p>
-                    </div>
-                    <div class="friend-recipe">
-                        <h4>Recipe 3</h4>
-                        <p>Description of recipe 3...</p>
-                    </div>
-                </div>
-            </section>
-        </main>
+            <h3>Pending Requests</h3>
+            <ul class="pending-requests" id="pendingRequests">
+                <!-- Pending friends will appear here -->
+            </ul>
+        </div>
     </div>
 </body>
 </html>
