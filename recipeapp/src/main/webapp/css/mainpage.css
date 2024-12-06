@@ -18,6 +18,9 @@ body {
     color: white;
     text-decoration: none;
     font-size: 17px;
+    background-color: rgba(0, 134, 208, 1);
+    padding: 5px 10px;
+    border-radius: 5px;
 }
 
 .center-container {
@@ -35,57 +38,14 @@ body {
     height: 40px;
    
 }
-
-@media screen and (max-width: 600px) {
-    .topnav {
-        flex-direction: column;
-    }
-
-    .center-container, .topnav a {
-        width: 100%;
-        text-align: center;
-        margin: 5px 0;
-    }
-
-    .topnav input[type=text] {
-        width: 80%;
-        border: 1px solid #ccc;
-    }
-}
-
 .content {
 	width: 100%;
 	height: fit-content;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
-}
-
-.home-img{
-    float:left;
-    border-radius: 20%;
-    width: 10vw;
-    height: 10vh;
-}
-
-.home-img img{
-    position: relative;
-    width: 80px;  
-    height: 80px; 
-    border-radius: 50%; 
-    object-fit: cover;
-}
-
-.information{
-    background-color: white;
-    float: left;
-    border-radius: 2%;
-    padding: 2rem;
-    margin-left: 2rem;
-    margin-top: 1rem;
-    height: 700px;
-    position: fixed;
-    width: 25%;
-    border: 0.13rem solid rgb(233, 233, 233);
+	align-items: center;
+	padding-top: 30px;
 }
 
 .recipes{
@@ -95,15 +55,9 @@ body {
 	grid-template-columns: repeat(auto-fill, 300px);
 	gap: 20px;
     background-color: white;
-    height: 700px;
+    min-height: 500px;
     border: 0.13rem solid rgb(233, 233, 233);
+    border-radius: 5px;
     width: 70%;
-}
-
-.friends-img img{
-    position: relative;
-    width: 30px;  
-    height: 30px;
-    border-radius: 50%; 
-    object-fit: cover;
+    padding: 20px 5px;
 }
