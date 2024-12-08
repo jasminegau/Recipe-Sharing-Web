@@ -4,6 +4,12 @@
 
 init();
 
+function rc(n)
+{
+	let baseURL = window.location.origin + "/recipeapp/";
+	var url = new URL("recipe.html?&id=" + n, baseURL); 
+	window.open(url);
+}
 
 function init()
 {
@@ -47,11 +53,46 @@ function getUser(u) {
 				document.getElementById("u").innerHTML = t.username;
 				document.getElementById("f").innerHTML = t.firstName + " " + t.lastName;
 				
-				document.getElementById("sr").innerHTML = t.savedRecipes[0];
+				var table = document.getElementById("sr");
+				for (let i = 0; i < t.savedRecipes.length; i++)
+				{
+					var row = table.insertRow(0);
+					var cell1 = row.insertCell(0);
+					var cell2 = row.insertCell(1);
+					var cell3 = row.insertCell(2);
+					cell1.innerHTML = t.savedRecipes[i].title;
+					cell2.innerHTML = t.savedRecipes[i].author;
+					cell3.innerHTML = t.savedRecipes[i].category;
+					row.addEventListener('click', function() {
+						 rc(t.uploadedRecipes[i].id);
+					}); 
+				}
+				var row = table.insertRow(0);
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				var cell3 = row.insertCell(1);
+				cell1.innerHTML = "Name";
+				cell2.innerHTML = "Author";
+				cell3.innerHTML = "Category";
 				
+				var table2 = document.getElementById("yr");
+				for (let i = 0; i < t.savedRecipes.length; i++)
+				{
+					var row = table2.insertRow(0);
+					var cell1 = row.insertCell(0);
+					var cell2 = row.insertCell(1);
+					cell1.innerHTML = t.uploadedRecipes[i].title;
+					cell2.innerHTML = t.uploadedRecipes[i].category;
+					row.addEventListener('click', function() {
+					   rc(t.uploadedRecipes[i].id);
+					}); 
+				}
 				
-				
-
+				var row2 = table2.insertRow(0);
+				var cell3 = row2.insertCell(0);
+				var cell4 = row2.insertCell(1);
+				cell3.innerHTML = "Name";
+				cell4.innerHTML = "Category";
 				
 				
 				
