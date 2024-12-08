@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+	<link rel="stylesheet" href="css/Login.css">
+	
+	
+</head>
+<body>
+
+<div class="topnav" id = "tn">
+        <div class="home-img" >
+        	<a href= "http://localhost:8080/recipeapp/index.html">
+            	<img src="assets/home.png" alt="Home Button" >
+            </a>
+    </div>
+        
+        
+        
+    </div>
+    
+    <div class = "bg" id = "bg">
+    	<div class = "pfp">
+    		<img src="assets/pfp.jpg" alt="Profile Picture">
+    	</div>
+    	
+    	<form id = "form" name = "form">
+    		Username
+	       	<input class = "a" name = "username" id = "username" placeholder = "Enter username">
+	       	Password
+	       	<input class = "a" name = "password" id = "password" placeholder = "Enter password">
+	        <button class = "login" type="button" id = "login" onclick = "validate();">
+	        Log in
+	        </button>
+	     </form>
+    </div>
+    
+    <div class="e" id = "e">
+    	<p id = "error"></p>
+    </div>
+     
+	<script src="js/Login.js"></script>
+</body>
+</html>
