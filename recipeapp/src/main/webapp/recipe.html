@@ -4,8 +4,10 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="css/mainpage.css">
+<link rel="stylesheet" href="css/recipe.css">
 </head>
 <body>
+	<script src="js/recipe.js"></script>
     <div class="topnav">
         <div id="profile" class="home-img">
 			<a href="#">Login</a>
@@ -14,7 +16,27 @@
         <a href="#">+Recipe</a>
     </div>
     <div class="content">
-   		<div id="recipes" class="recipes">
+   		<div class="displayRecipeContainer">
+   			<h1 id="title">
+   				Default Title
+   			</h1>
+   			<h3 id="category">
+   				default, default, default
+   			</h3>
+   			<h4 id="author">
+   				by: person
+   			</h4>
+   			<h2>
+   				Instructions
+   			</h2>
+   			<pre id="instructions">
+	Once upon a time, in a small, quaint village nestled between rolling hills in Italy, there was a little trattoria named "La Tavola Magica." It wasn’t famous, nor did it have a Michelin star, but it had something more special than that: an ancient recipe passed down from generation to generation. This recipe was for the perfect pasta, and it was said that the pasta had the magical ability to bring people together, no matter how different they were.
+	
+	The owner of La Tavola Magica, an elderly woman named Nonna Rosa, was as kind as she was wise. She had a twinkle in her eye and a smile that made even the grumpiest of customers feel welcome. Every morning, long before the sun peeked over the hills, Nonna Rosa would be in the kitchen, kneading dough and shaping it with her hands. The smell of freshly made pasta would fill the air, and the villagers would begin to trickle in, drawn by the irresistible aroma.
+	
+	Nonna Rosa’s pasta wasn’t like any other pasta. It had a certain je ne sais quoi that could only be explained by the story of its creation.
+   			</pre>
+  			<button id="saveRecipe">Save Recipe</button>
     	</div>
     </div>
 </body>
