@@ -87,12 +87,14 @@ public class Login extends HttpServlet {
 	
 	//user class to hold user information upon successful login
 	class User {
+		int id;
 		String username;
 		String firstName;
 		String lastName;
 		ArrayList<Recipe> savedRecipes;
 		
-		User(String username, String firstName, String lastName, ArrayList<Recipe> savedRecipes) {
+		User(int id, String username, String firstName, String lastName, ArrayList<Recipe> savedRecipes) {
+			this.id = id;
 			this.username = username;
 			this.firstName = firstName;
 			this.lastName = lastName;
@@ -126,7 +128,7 @@ public class Login extends HttpServlet {
 		}
 		
 		//creating user object
-		User user = new User(rs.getString("username"), rs.getString("firstName"), rs.getString("lastName"), recipes);
+		User user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("firstName"), rs.getString("lastName"), recipes);
 		
 		//converting object to json and return string
 		return gson.toJson(user);

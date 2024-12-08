@@ -1,6 +1,8 @@
 package recipe;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -83,7 +85,58 @@ public class HandleRecipe extends HttpServlet {
 	 */
 	//upload recipe
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		//establish settings and tools
+		response.setContentType("text/plain");
+		PrintWriter out = response.getWriter();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+		StringBuilder builder = new StringBuilder();
+		Gson gson = new Gson();
+		
+		//read in input
+		String line;
+		while((line = reader.readLine()) != null) {
+			builder.append(line);
+		}
+		
+		//convert to object
+		RecipeUpload recipe = gson.fromJson(builder.toString(), RecipeUpload.class);
+		
+		//upload to database
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost/RecipeApp", "root", "root");
+			PreparedStatement stmt = con.prepareStatement("INSERT INTO recipes (title, category, instructions, author) VALUES (?, ?, ?, ?)");
+			stmt.setString(1, recipe.title);
+			stmt.setString(2, recipe.category);
+			stmt.setString(3, recipe.instructions);
+			stmt.setInt(4, recipe.author);
+		    stmt.executeUpdate();
+		    out.print("success");
+		} catch (SQLException error) {
+			System.out.println(error);
+			out.print("failed");
+		}
+		catch (ClassNotFoundException error) {
+			System.out.println(error);
+			out.print("failed");
+		}
+		finally {
+			out.flush();
+		}
+	}
+	
+	class RecipeUpload {
+		String title;
+		String category;
+		String instructions;
+		int author;
+		
+		RecipeUpload(String title, String category, String instructions, int author) {
+			this.title = title;
+			this.category = category;
+			this.instructions = instructions;
+			this.author = author;
+		}
 	}
 
 }
