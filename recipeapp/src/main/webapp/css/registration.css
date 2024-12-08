@@ -13,7 +13,6 @@ form {
     background-color: #ffffff;
     padding: 20px 30px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
 }
@@ -41,7 +40,7 @@ form button {
     font-size: 16px;
     font-weight: bold;
     color: #fff;
-    background-color: #007BFF;
+    background-color: blue;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -50,7 +49,7 @@ form button {
 
 form button:last-child {
     margin-right: 0;
-    background-color: #6c757d;
+    background-color: #5a6268;
 }
 
 form button:hover {
@@ -73,4 +72,20 @@ form button:focus {
     font-weight: bold;
     border: 1px solid;
     display: none; 
+}
+
+.home-button-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+.home-button {
+    color: white;
+    background-color: blue;
+    padding: 15px 30px 30px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
 }
