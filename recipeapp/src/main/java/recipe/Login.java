@@ -111,16 +111,19 @@ public class Login extends HttpServlet {
 		//parsing recipe id list into recipe objects
 		try {
 			JsonArray recipeIds = gson.fromJson(rs.getString("savedRecipes"), JsonArray.class);
-			for (int i = 0; i < recipeIds.size(); i++) {
-				PreparedStatement stmt = con.prepareStatement("SELECT r.id, r.title, r.category, u.username FROM recipes r, users u WHERE r.id = ? AND r.author = u.id");
-				stmt.setInt(1, recipeIds.get(i).getAsInt());
-				ResultSet result = stmt.executeQuery();
-				if (result.next()) {
-					int id = result.getInt("id");
-					String title = result.getString("title");
-					String category = result.getString("category");
-					String author = result.getString("username");
-					recipes.add(new Recipe(id, title, category, "", author));
+			if (recipeIds != null)
+			{
+				for (int i = 0; i < recipeIds.size(); i++) {
+					PreparedStatement stmt = con.prepareStatement("SELECT r.id, r.title, r.category, u.username FROM recipes r, users u WHERE r.id = ? AND r.author = u.id");
+					stmt.setInt(1, recipeIds.get(i).getAsInt());
+					ResultSet result = stmt.executeQuery();
+					if (result.next()) {
+						int id = result.getInt("id");
+						String title = result.getString("title");
+						String category = result.getString("category");
+						String author = result.getString("username");
+						recipes.add(new Recipe(id, title, category, "", author));
+					}
 				}
 			}
 		} catch (JsonSyntaxException err) {
