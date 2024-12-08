@@ -4,6 +4,10 @@
 
 init();
 
+function friend()
+{
+	document.getElementById("add").style.visibility = "hidden";
+}
 function rc(n)
 {
 	let baseURL = window.location.origin + "/recipeapp/";
@@ -13,6 +17,9 @@ function rc(n)
 
 function init()
 {
+	document.getElementById("add").style.visibility = "hidden";
+	document.getElementById("add").addEventListener("click", friend);
+
 	document.getElementById("u").innerHTML = "i";
 	
 	const urlParams = new URLSearchParams(window.location.search);
@@ -20,9 +27,20 @@ function init()
 	
 	
 	
-	if (!user)
+	if (!user && sessionStorage.getItem("User"))
 	{
 		user = sessionStorage.getItem("User");
+		document.getElementById("add").style.visibility = "hidden";
+	}
+	
+	else if (user && sessionStorage.getItem("User") && user !== sessionStorage.getItem("User"))
+	{
+		document.getElementById("add").style.visibility = "visible";
+		
+	}
+	else if (!user)
+	{
+		document.getElementById("bg").innerHTML = "not logged in";
 	}
 	getUser(user);
 }
@@ -64,7 +82,7 @@ function getUser(u) {
 					cell2.innerHTML = t.savedRecipes[i].author;
 					cell3.innerHTML = t.savedRecipes[i].category;
 					row.addEventListener('click', function() {
-						 rc(t.uploadedRecipes[i].id);
+						 rc(t.savedRecipes[i].id);
 					}); 
 				}
 				var row = table.insertRow(0);
