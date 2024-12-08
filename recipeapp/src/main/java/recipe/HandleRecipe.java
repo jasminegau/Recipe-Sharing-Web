@@ -49,7 +49,7 @@ public class HandleRecipe extends HttpServlet {
 		//find recipe
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost/RecipeApp", "root", "root");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost/RecipeApp", "root", "jg112233");
 			PreparedStatement stmt = con.prepareStatement("SELECT r.title, r.category, r.instructions, u.username FROM recipes r, users u WHERE r.id = ? AND r.author = u.id");
 			stmt.setInt(1, recipeId);
 		    ResultSet rs = stmt.executeQuery();

@@ -71,7 +71,7 @@ public class Search extends HttpServlet {
 		//connecting to database and adding every recipe into a lucene document to index
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost/RecipeApp", "root", "root");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost/RecipeApp", "root", "jg112233");
 			PreparedStatement stmt = con.prepareStatement("SELECT r.id, r.title, r.category, u.username FROM recipes r, users u WHERE r.author = u.id");
 	        ResultSet rs = stmt.executeQuery();
 	       while(rs.next()) {

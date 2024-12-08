@@ -11,20 +11,59 @@
 <body>
     <div class="topnav">
         <div id="profile" class="home-img">
-			<a href="#">Login</a>
-			<a href="#">Register</a>
-		</div>
+            <!-- Profile Section -->
+            <span id="user-greeting"></span>
+            <a href="Login.html" id="login-link">Login</a>
+            <a href="registration.html" id="register-link">Register</a>
+            <a href="#" id="logout-link" style="display: none;">Logout</a>
+            <a href="friends.html" id="friends-link" style="display: none;">Friends</a>
+        </div>
+        <!-- Search Bar -->
         <form class="center-container" onsubmit="updateSearch(event)">
-       		<input id="search" type="text" placeholder="Search...">
-       	</form>
+            <input id="search" type="text" placeholder="Search...">
+        </form>
+        <!-- Add Recipe -->
         <a href="#">+Recipe</a>
     </div>
     <div class="content">
-   		<div id="recipes" class="recipes">
-    	</div>
+        <div id="recipes" class="recipes"></div>
     </div>
     <script src="js/recipeItem.js"></script>
     <script src="js/index.js"></script>
+    <script>
+        // Script to handle user session and display username
+        document.addEventListener('DOMContentLoaded', () => {
+            const username = sessionStorage.getItem("User");
+
+            const userGreeting = document.getElementById("user-greeting");
+            const loginLink = document.getElementById("login-link");
+            const registerLink = document.getElementById("register-link");
+            const logoutLink = document.getElementById("logout-link");
+            const friendsLink = document.getElementById("friends-link");
+
+            if (username) {
+                // If user is logged in, display username and logout link
+                userGreeting.textContent = `Welcome, ${username}`;
+                loginLink.style.display = 'none';
+                registerLink.style.display = 'none';
+                logoutLink.style.display = 'inline';
+                friendsLink.style.display = 'inline';
+
+                // Add functionality to the logout link
+                logoutLink.addEventListener('click', () => {
+                    sessionStorage.removeItem("User");
+                    window.location.reload();
+                });
+            } else {
+                // If no user is logged in, show login and register links
+                userGreeting.textContent = '';
+                loginLink.style.display = 'inline';
+                registerLink.style.display = 'inline';
+                logoutLink.style.display = 'none';
+                friendsLink.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -15,7 +15,6 @@ function validate() {
 	        method: 'POST'
 	    })
 	
-			
        .then(data => data.text())
     	 .then((text) => {
 			const t = JSON.parse(text);
@@ -28,10 +27,6 @@ function validate() {
 			else{
 				sessionStorage.setItem("User", t.username);
 				window.location.assign("index.html");
-
-				
-				
-				
     		}
   	 }).catch(function (error) {
     		console.log('request failed', error)

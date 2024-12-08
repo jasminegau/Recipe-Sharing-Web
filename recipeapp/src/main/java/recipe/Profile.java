@@ -57,7 +57,7 @@ public class Profile extends HttpServlet {
 		//handle login request
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost/RecipeApp", "root", "root");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost/RecipeApp", "root", "jg112233");
 			PreparedStatement stmt = con.prepareStatement("SELECT * FROM users WHERE username = ?");
 			stmt.setString(1, username);
 	        ResultSet rs = stmt.executeQuery();
