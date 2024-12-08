@@ -1,7 +1,15 @@
 
-for (let i = 0; i < 10; i++) {
-	document.getElementById("recipes").appendChild(getRecipeItem("test", "yummy", "test user"));
-}
+fetch(`http://localhost:8080/recipeapp/ShowAllRecipe`)
+		.then(response => response.json())
+		.then(data => {
+			document.getElementById("recipes").innerHTML = "";
+			for (let recipe of data) {
+				document.getElementById("recipes").appendChild(getRecipeItem(recipe.id, recipe.title, recipe.category, recipe.author));
+			}
+		})
+		.catch(error => {
+			console.log(error);
+		})
 
 function updateSearch(event) {
 	event.preventDefault();
@@ -10,7 +18,10 @@ function updateSearch(event) {
 	fetch(`http://localhost:8080/recipeapp/Search?query=${query}`)
 		.then(response => response.json())
 		.then(data => {
-			console.log(data);
+			document.getElementById("recipes").innerHTML = "";
+			for (let recipe of data) {
+				document.getElementById("recipes").appendChild(getRecipeItem(recipe.id, recipe.title, recipe.category, recipe.author));
+			}
 		})
 		.catch(error => {
 			console.log(error);

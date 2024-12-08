@@ -13,7 +13,7 @@ const recipeItem = `
 	</div>
 `;
 
-function getRecipeItem(title, category, creator) {
+function getRecipeItem(id, title, category, creator) {
 	//creating recipe element
 	const container = document.createElement("div");
 	container.innerHTML = recipeItem;
@@ -22,6 +22,11 @@ function getRecipeItem(title, category, creator) {
 	container.querySelector("#title").textContent = title;
 	container.querySelector("#category").textContent = category;
 	container.querySelector("#user").textContent = "By: " + creator;
+	
+	//adding click event listener
+	container.addEventListener("click", () => {
+		window.location.href = `recipe.html?&id=${id}`;
+	})
 	
 	return container;
 }
