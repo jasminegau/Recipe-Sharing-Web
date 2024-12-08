@@ -117,8 +117,8 @@ public class Login extends HttpServlet {
 					int id = result.getInt("id");
 					String title = result.getString("title");
 					String category = result.getString("category");
-					String author = result.getString("author");
-					recipes.add(new Recipe(id, title, category, author));
+					String author = result.getString("username");
+					recipes.add(new Recipe(id, title, category, "", author));
 				}
 			}
 		} catch (JsonSyntaxException err) {
@@ -139,12 +139,14 @@ class Recipe {
 	int id;
 	String title;
 	String category;
+	String instructions;
 	String author;
 	
-	Recipe(int id, String title, String category, String author) {
+	Recipe(int id, String title, String category, String instructions, String author) {
 		this.id = id;
 		this.title = title;
 		this.category = category;
+		this.instructions = instructions;
 		this.author = author;
 	}
 }

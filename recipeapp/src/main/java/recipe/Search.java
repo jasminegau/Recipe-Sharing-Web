@@ -118,7 +118,7 @@ public class Search extends HttpServlet {
 	        	int docId = results[i].doc;
 	            @SuppressWarnings("deprecation")
 				Document d = searcher.doc(docId);
-	            recipes.add(new Recipe(Integer.parseInt(d.get("id")), d.get("title"), d.get("category"), d.get("author")));
+	            recipes.add(new Recipe(Integer.parseInt(d.get("id")), d.get("title"), d.get("category"), "", d.get("author")));
 	        }
 		}
 		catch(IOException error) {
