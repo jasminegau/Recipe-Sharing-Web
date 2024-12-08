@@ -122,7 +122,7 @@ public class Profile extends HttpServlet {
 			}
 			
 			
-			PreparedStatement stmt = con.prepareStatement("SELECT r.id, r.title, r.category, r.instructions, r.author, u.username FROM recipes r, users u WHERE r.author = u.id AND u.username = ?");
+			PreparedStatement stmt = con.prepareStatement("SELECT r.id, r.title, r.category, r.instructions, r.author, u.username FROM recipes r, users u WHERE r.author = ? AND r.author = u.id");
 
 			stmt.setInt(1, rs.getInt("id"));
 			ResultSet result = stmt.executeQuery();
@@ -130,7 +130,7 @@ public class Profile extends HttpServlet {
 				int id = result.getInt("id");
 				String title = result.getString("title");
 				String category = result.getString("category");
-				String author = result.getString("author");
+				String author = result.getString("username");
 				String instr = result.getString("instructions");
 				recipes2.add(new Recipe(id, title, category, instr, author));
 			}
@@ -155,12 +155,13 @@ class ProfileUser {
 	String firstName;
 	String lastName;
 	ArrayList<Recipe> savedRecipes;
-	ArrayList<Recipe> createdRecipes;
+	ArrayList<Recipe> uploadedRecipes;
 	
-	ProfileUser(String username, String firstName, String lastName, ArrayList<Recipe> savedRecipes, ArrayList<Recipe> createdRecipes) {
+	ProfileUser(String username, String firstName, String lastName, ArrayList<Recipe> savedRecipes, ArrayList<Recipe> uploadedRecipes) {
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.savedRecipes = savedRecipes;
+		this.uploadedRecipes = uploadedRecipes;
 	}
 }
