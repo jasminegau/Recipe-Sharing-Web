@@ -7,7 +7,7 @@ div.bg
 
 	color: white;
 	justify-content: center;
-	background-color: #90d3de; 
+	background-color: #4b7137; 
 	background-size: cover; 
 	padding: 10px 20px;
     border-radius: 8px;
@@ -18,6 +18,14 @@ div.bg
 
 
 }
+
+
+.home-img a {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+}
+
 
 .home-img img {
     width: 40px;
@@ -55,7 +63,7 @@ div.bg
 	border-radius: 8px;
 	align-items: center;
     justify-content: space-between;
-    background-color: #002aff;
+    background-color: #C5E1A5;
     margin: 10px auto 30px auto;
     border: white;
 }
