@@ -37,10 +37,11 @@ form button {
     width: 48%;
     padding: 10px;
     margin-right: 4%;
+    margin-bottom: 10px;
     font-size: 16px;
     font-weight: bold;
     color: #fff;
-    background-color: blue;
+    background-color:#4b7137;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -83,8 +84,8 @@ form button:focus {
 
 .home-button {
     color: white;
-    background-color: blue;
-    padding: 15px 30px 30px;
+    background-color:#4b7137;
+    padding: 15px 30px 15px;
     border-radius: 8px;
     font-size: 18px;
     font-weight: bold;
