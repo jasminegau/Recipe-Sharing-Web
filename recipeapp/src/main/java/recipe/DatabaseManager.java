@@ -1,3 +1,5 @@
+package recipe;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ public class DatabaseManager {
     }
 
     // Create a new recipe
-    public boolean saveRecipe(Recipe recipe) throws ClassNotFoundException {
+    public boolean saveRecipe(AddRecipes recipe) throws ClassNotFoundException {
         System.out.println("issue 1");
         String sql = "INSERT INTO recipes (title, category, instructions, ingredients, difficulty, time) VALUES (?, ?, ?, ?, ?, ?)";
         Class.forName("com.mysql.cj.jdbc.Driver");  // Load MySQL JDBC driver
@@ -67,14 +69,14 @@ public class DatabaseManager {
 
 
     // Retrieve a recipe by id
-    public Recipe getRecipeById(int id) throws ClassNotFoundException {
+    public AddRecipes getRecipeById(int id) throws ClassNotFoundException {
         String sql = "SELECT * FROM recipes WHERE id = ?";
         Class.forName("com.mysql.cj.jdbc.Driver");
         try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    Recipe recipe = new Recipe();
+                    AddRecipes recipe = new AddRecipes();
                     recipe.setId(rs.getInt("id"));
                     recipe.setTitle(rs.getString("title"));
                     recipe.setCategory(rs.getString("category"));
@@ -96,7 +98,7 @@ public class DatabaseManager {
     }
 
     // Update a recipe
-    public boolean updateRecipe(Recipe recipe) throws ClassNotFoundException {
+    public boolean updateRecipe(AddRecipes recipe) throws ClassNotFoundException {
         if (recipe.getId() == null) return false;
         //String sql = "UPDATE recipes SET title = ?, category = ?, instructions = ? WHERE id = ?";
         String sql = "UPDATE recipes SET title = ?, category = ?, instructions = ?, ingredients = ?, difficulty = ?, time = ? WHERE id = ?";
@@ -139,14 +141,14 @@ public class DatabaseManager {
     }
 
     // Retrieve all recipes
-    public List<Recipe> getAllRecipes() throws ClassNotFoundException {
-        List<Recipe> recipes = new ArrayList<>();
+    public List<AddRecipes> getAllRecipes() throws ClassNotFoundException {
+        List<AddRecipes> recipes = new ArrayList<>();
         String sql = "SELECT * FROM recipes";
         Class.forName("com.mysql.cj.jdbc.Driver");
         try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                Recipe recipe = new Recipe();
+                AddRecipes recipe = new AddRecipes();
                 recipe.setId(rs.getInt("id"));
                 recipe.setTitle(rs.getString("title"));
                 recipe.setCategory(rs.getString("category"));
