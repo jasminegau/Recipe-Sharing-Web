@@ -1,3 +1,5 @@
+package recipe;
+
 import java.io.IOException;
 
 import java.io.PrintWriter;
@@ -50,7 +52,7 @@ public class RecipeValidation extends HttpServlet {
         String dbUrl = "jdbc:mysql://localhost/RecipeApp";
         String dbUser = "root";
         //String dbPassword = "root";
-        String dbPassword = "root";
+        String dbPassword = "Warriors123)%";
         
         DatabaseManager db = new DatabaseManager(dbUrl, dbUser, dbPassword);
         
@@ -69,7 +71,7 @@ public class RecipeValidation extends HttpServlet {
         
         System.out.println("got here 4");
         try {
-			Recipe newRecipe = rm.createNewRecipe(recipe);
+			AddRecipes newRecipe = rm.createNewRecipe(recipe);
 		} catch (IllegalArgumentException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
