@@ -51,8 +51,8 @@ public class RecipeValidation extends HttpServlet {
         //------------new addition -------------
         String dbUrl = "jdbc:mysql://localhost/RecipeApp";
         String dbUser = "root";
-        //String dbPassword = "root";
-        String dbPassword = "Warriors123)%";
+        String dbPassword = "root";
+       
         
         DatabaseManager db = new DatabaseManager(dbUrl, dbUser, dbPassword);
         
