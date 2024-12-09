@@ -6,7 +6,28 @@ init();
 
 function friend()
 {
-	document.getElementById("add").style.visibility = "hidden";
+	document.getElementById("add").style.visibility = "hidden";	
+	let baseURL = window.location.origin + "/recipeapp/";
+	const urlParams = new URLSearchParams(window.location.search);
+	user = urlParams.get("user");
+	var url = new URL("Profile", baseURL);
+	var params = {
+	username: user}
+	url.search = new URLSearchParams(params).toString();
+		
+	fetch(url, {
+		   method: 'POST'
+	})
+		
+				
+	     .then(data => data.text())
+	   	.then((text) => {
+		const t = JSON.parse(text);
+		}).catch(function (error) {
+		    		console.log('request failed', error)
+					
+		  	 });
+	
 }
 function rc(n)
 {
@@ -111,6 +132,12 @@ function getUser(u) {
 				var cell4 = row2.insertCell(1);
 				cell3.innerHTML = "Name";
 				cell4.innerHTML = "Category";
+				
+				if(sessionStorage.getItem("User") && t.friends.includes(sessionStorage.getItem("User")))
+				{
+					
+					document.getElementById("add").style.visibility = "hidden";	
+				}
 				
 				
 				

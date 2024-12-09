@@ -9,12 +9,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -42,7 +44,7 @@ public class Profile extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("A");
+		
 		//establish settings and tools
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
@@ -104,6 +106,7 @@ public class Profile extends HttpServlet {
 		Gson gson = new Gson();
 		ArrayList<Recipe> recipes = new ArrayList<Recipe>();
 		ArrayList<Recipe> recipes2 = new ArrayList<Recipe>();
+		ArrayList<String> friends = new ArrayList<String>();
 		
 		//parsing recipe id list into recipe objects
 		try {
@@ -137,18 +140,108 @@ public class Profile extends HttpServlet {
 				recipes2.add(new Recipe(id, title, category, instr, author));
 			}
 			
+			friends = getFriends(con, getUserId(con, rs.getString("username")));
+			
 		} catch (JsonSyntaxException err) {
 			System.out.println(err);
 		}
 		
 		//creating user object
 		
-		ProfileUser user = new ProfileUser(rs.getString("username"), rs.getString("firstName"), rs.getString("lastName"), recipes, recipes2);
+		ProfileUser user = new ProfileUser(rs.getString("username"), rs.getString("firstName"), rs.getString("lastName"), recipes, recipes2, friends);
 		
 		//converting object to json and return string
 		return gson.toJson(user);
 	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("application/json");
+		PrintWriter out = response.getWriter();
+		HttpSession session = request.getSession(false);
+		Gson gson = new Gson();
+		String targetUsername = request.getParameter("username");
+		
+		int userId = (int) session.getAttribute("userId");
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost/RecipeApp", "root", "root");
+			Integer targetUserId = getUserId(con, targetUsername);
+			sendFriendRequest(con, userId, targetUserId);
+		} catch (SQLException error) {
+			System.out.println(error);
+			Error err = new Error(error.getMessage());
+			out.print(gson.toJson(err));
+		}
+		catch (ClassNotFoundException error) {
+			System.out.println(error);
+			Error err = new Error(error.getMessage());
+			out.print(gson.toJson(err));
+		}
+		finally {
+			out.flush();
+		}
+		
+	}
+	
+	private void sendFriendRequest(Connection con, int userId, int targetUserId) throws SQLException {
+        // Check if a friendship already exists
+        String checkQuery = "SELECT status FROM friendships WHERE user_id = ? AND friend_id = ?";
+        try (PreparedStatement checkStmt = con.prepareStatement(checkQuery)) {
+            checkStmt.setInt(1, userId);
+            checkStmt.setInt(2, targetUserId);
+            try (ResultSet rs = checkStmt.executeQuery()) {
+                if (rs.next()) {
+                    String status = rs.getString("status");
+                    if ("pending".equals(status)) {
+                        throw new SQLException("Friend request already sent");
+                    } else if ("accepted".equals(status)) {
+                        throw new SQLException("Already friends");
+                    } else if ("rejected".equals(status)) {
+                        // Optionally allow re-sending after rejection
+                        // For now, we'll allow it
+                    }
+                }
+            }
+        }
 
+        // Insert a new friendship with status 'pending'
+        String insertQuery = "INSERT INTO friendships (user_id, friend_id, status) VALUES (?, ?, 'pending')";
+        try (PreparedStatement insertStmt = con.prepareStatement(insertQuery)) {
+            insertStmt.setInt(1, userId);
+            insertStmt.setInt(2, targetUserId);
+            insertStmt.executeUpdate();
+        }
+    }
+	 private Integer getUserId(Connection con, String username) throws SQLException {
+	        String query = "SELECT id FROM users WHERE username = ?";
+	        try (PreparedStatement stmt = con.prepareStatement(query)) {
+	            stmt.setString(1, username);
+	            try (ResultSet rs = stmt.executeQuery()) {
+	                if (rs.next()) {
+	                    return rs.getInt("id");
+	                }
+	            }
+	        }
+	        return null;
+	    }
+	 
+	 private ArrayList<String> getFriends(Connection con, int userId) throws SQLException {
+		 System.out.println(userId);
+	        String query = "SELECT  f.user_id, f.friend_id, u.username from friendships f JOIN users u ON (f.user_id = u.id) where f.user_id = ? or f.friend_id = ?;";
+	                       
+	        ArrayList<String> friends = new ArrayList<>();
+	        try (PreparedStatement stmt = con.prepareStatement(query)) {
+	            stmt.setInt(1, userId);
+	            stmt.setInt(2, userId); 
+	            try (ResultSet rs = stmt.executeQuery()) {
+	                while (rs.next()) {
+	                	
+	                    friends.add(rs.getString("username"));
+	                }
+	            }
+	        }
+	        System.out.println(friends);
+	        return friends;
+	    }
 
 }
 
@@ -158,12 +251,14 @@ class ProfileUser {
 	String lastName;
 	ArrayList<Recipe> savedRecipes;
 	ArrayList<Recipe> uploadedRecipes;
+	ArrayList<String> friends;
 	
-	ProfileUser(String username, String firstName, String lastName, ArrayList<Recipe> savedRecipes, ArrayList<Recipe> uploadedRecipes) {
+	ProfileUser(String username, String firstName, String lastName, ArrayList<Recipe> savedRecipes, ArrayList<Recipe> uploadedRecipes, ArrayList<String> friends) {
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.savedRecipes = savedRecipes;
 		this.uploadedRecipes = uploadedRecipes;
+		this.friends = friends;
 	}
 }
