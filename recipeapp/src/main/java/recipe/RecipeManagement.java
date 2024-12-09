@@ -1,3 +1,5 @@
+package recipe;
+
 import java.util.Map;
 
 public class RecipeManagement {
@@ -7,8 +9,8 @@ public class RecipeManagement {
         this.dbManager = dbManager;
     }
 
-    public Recipe createNewRecipe(Map<String, String> fields) throws IllegalArgumentException, ClassNotFoundException {
-        Recipe recipe = new Recipe(
+    public AddRecipes createNewRecipe(Map<String, String> fields) throws IllegalArgumentException, ClassNotFoundException {
+        AddRecipes recipe = new AddRecipes(
             fields.get("title"),
             fields.get("category"),
             fields.get("instructions"),
@@ -36,8 +38,8 @@ public class RecipeManagement {
         return recipe;
     }
 
-    public Recipe editRecipe(int recipeId, Map<String, String> updatedFields) throws ClassNotFoundException {
-        Recipe existing = dbManager.getRecipeById(recipeId);
+    public AddRecipes editRecipe(int recipeId, Map<String, String> updatedFields) throws ClassNotFoundException {
+        AddRecipes existing = dbManager.getRecipeById(recipeId);
         if (existing == null) throw new IllegalArgumentException("Recipe does not exist");
 
         if (updatedFields.containsKey("title")) existing.setTitle(updatedFields.get("title"));
@@ -56,7 +58,7 @@ public class RecipeManagement {
     }
 
     public boolean deleteRecipe(int recipeId) throws ClassNotFoundException {
-        Recipe existing = dbManager.getRecipeById(recipeId);
+        AddRecipes existing = dbManager.getRecipeById(recipeId);
         if (existing == null) throw new IllegalArgumentException("Recipe does not exist");
         return dbManager.deleteRecipe(recipeId);
     }
