@@ -1,122 +1,104 @@
-package recipe;
+package recipe; 
 
-import java.io.IOException;
-
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.util.HashMap;
-import java.util.Map;
-
-@WebServlet("/RecipeValidation")
-public class RecipeValidation extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    String recipeName = " "; 
-    String cuisine = " "; 
-    String ingredients = " "; 
-    String instructions = " "; 
-    String difficulty = " "; 
-    String time = " ";
-
-    protected void service(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-    
-    	System.out.println("Got here");
-        
-        // Retrieve form parameters with null checks
-        recipeName = request.getParameter("name");
-        cuisine = request.getParameter("cuisine");
-        ingredients = request.getParameter("ingredients");
-        instructions = request.getParameter("instructions");
-        difficulty = request.getParameter("difficulty");
-        time = request.getParameter("time");
-        
-        System.out.println(recipeName + cuisine + ingredients + instructions + difficulty + time);
-        	
-        System.out.println("got here 1.5");
-        
-        // Basic validation
-        if (recipeName == null || recipeName.trim().isEmpty()) {
-        	System.out.println(recipeName);
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Recipe name is required");
-            return;
-        }
-        
-        
-        System.out.println("got here 2");
-        //------------new addition -------------
-        String dbUrl = "jdbc:mysql://localhost/RecipeApp";
-        String dbUser = "root";
-        //String dbPassword = "root";
-        String dbPassword = "Warriors123)%";
-        
-        DatabaseManager db = new DatabaseManager(dbUrl, dbUser, dbPassword);
-        
-        System.out.println("got here 3");
-        
-        RecipeManagement rm = new RecipeManagement(db); 
-        
-         
-        Map<String, String> recipe = new HashMap<>();
-        recipe.put("title", recipeName);
-        recipe.put("category", cuisine);
-        recipe.put("instructions", instructions);
-        recipe.put("ingredients", ingredients);
-        recipe.put("difficulty", difficulty);
-        recipe.put("time", time);
-        
-        System.out.println("got here 4");
-        try {
-			AddRecipes newRecipe = rm.createNewRecipe(recipe);
-		} catch (IllegalArgumentException | ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        System.out.println("got here 5");
-        
-        
-        //----------------end--------------------
-        
-        
-        
-
-        // Create JSON string (still manual, but with basic escaping)
-        String jsonString = String.format(
-            "{\"recipe name\": \"%s\"," +
-            "\"cuisine\": \"%s\"," +
-            "\"ingredients\": \"%s\"," +
-            "\"instructions\": \"%s\"," +
-            "\"difficulty\": \"%s\"," +
-            "\"time\": \"%s\"}",
-            escapeJson(recipeName),
-            escapeJson(cuisine),
-            escapeJson(ingredients),
-            escapeJson(instructions),
-            escapeJson(difficulty),
-            escapeJson(time)
-        );
-
-        // Set response properties
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        System.out.println(jsonString);
-
-        // Write response
-        try (PrintWriter out = response.getWriter()) {
-            out.print(jsonString);
-        }
-    }
-
-    // Simple JSON escaping method
-    private String escapeJson(String input) {
-        if (input == null) return "";
-        return input.replace("\"", "\\\"")
-                    .replace("\n", "\\n")
-                    .replace("\r", "\\r")
-                    .replace("\t", "\\t");
-    }
+public class AddRecipes{
+	private Integer id; 
+	private String title; 
+	private String category; 
+	private String instructions; 
+	// --------------------- Umer add ------------
+	private String ingredients; 
+	private String difficulty;
+	private String time; 
+	// -------------------------end------------------
+	
+	public AddRecipes() {}
+	
+	public AddRecipes(String title, String category, String instructions, String ingredients, String difficulty, String time) {
+		this.title = title; 
+		this.category = category; 
+		this.instructions = instructions; 
+		// ---------------------------
+		this.ingredients = ingredients; 
+		this.difficulty = difficulty; 
+		this.time = time; 
+		//------------end----------------
+	}
+	
+	public Integer getId() {
+		return this.id; 
+	}
+	
+	public void setId(Integer id) {
+		this.id = id; 
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+	
+	public void setTitle(String title) {
+		this.title = title; 
+	}
+	
+	public String getCategory() {
+		return this.category; 
+	}
+	
+	public void setCategory(String category) {
+		this.category = category; 
+	}
+	
+	
+	public String getInstructions() {
+		return instructions; 
+	}
+	
+	public void setInstructions(String instructions) {
+		this.instructions = instructions;
+	}
+	
+	//----------------Umer Edits---------------------
+	public String getIngredients() {
+		return this.ingredients; 
+	}
+	public void setIngredients(String ingredients) {
+		this.ingredients = ingredients;
+	}
+	
+	public String getDifficulty() {
+		return this.difficulty; 
+	}
+	public void setDifficulty(String difficulty) {
+		this.difficulty = difficulty; 
+	}
+	
+	public String getTime() {
+		return this.time;
+	}
+	public void setTime(String time) {
+		this.time = time; 
+	}
+	
+	
+	public boolean validateRecipeFields() {
+		if (title == null || title.trim().isEmpty()) return false; 
+		if (category == null || category.trim().isEmpty()) return false; 
+		if (instructions == null || instructions.trim().isEmpty()) return false; 
+		if (ingredients == null || ingredients.trim().isEmpty()) return false;
+		if (difficulty == null || difficulty.trim().isEmpty()) return false; 
+		if (time == null || time.trim().isEmpty()) return false; 
+		return true; 
+	}
+	
+	//--------------------end------------------------
+	
+	
+	
+//	public boolean validateRecipeFields() {
+//		if (title == null || title.trim().isEmpty()) return false; 
+//		if (category == null || category.trim().isEmpty()) return false; 
+//		if (instructions == null || instructions.trim().isEmpty()) return false; 
+//		return true; 
+//	}
+	
 }
