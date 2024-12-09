@@ -1,4 +1,6 @@
-public class Recipe{
+package recipe;
+
+public class AddRecipe{
 	private Integer id; 
 	private String title; 
 	private String category; 
@@ -9,9 +11,9 @@ public class Recipe{
 	private String time; 
 	// -------------------------end------------------
 	
-	public Recipe() {}
+	public AddRecipe() {}
 	
-	public Recipe(String title, String category, String instructions, String ingredients, String difficulty, String time) {
+	public AddRecipe(String title, String category, String instructions, String ingredients, String difficulty, String time) {
 		this.title = title; 
 		this.category = category; 
 		this.instructions = instructions; 
