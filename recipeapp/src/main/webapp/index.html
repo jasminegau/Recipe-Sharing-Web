@@ -22,7 +22,7 @@
             <input id="search" type="text" placeholder="Search recipes...">
         </form>
         
-        <a href="addrecipe.html" class="add-recipe">+Recipe</a>
+        <a href="addrecipe.html" id="add-recipe" style="display: none;" class="add-recipe">+Recipe</a>
     </div>
 
     <div class="content">
@@ -41,6 +41,7 @@
             const registerLink = document.getElementById("register-link");
             const logoutLink = document.getElementById("logout-link");
             const friendsLink = document.getElementById("friends-link");
+            const addRecipe = document.getElementById("add-recipe");
 
             if (username) {
                 // If user is logged in, display username and logout link
@@ -49,6 +50,7 @@
                 registerLink.style.display = 'none';
                 logoutLink.style.display = 'inline';
                 friendsLink.style.display = 'inline';
+                addRecipe.style.display = 'inline';
 
                 // Add functionality to the logout link
                 logoutLink.addEventListener('click', () => {
@@ -62,6 +64,8 @@
                 registerLink.style.display = 'inline';
                 logoutLink.style.display = 'none';
                 friendsLink.style.display = 'none';
+                addRecipe.style.display = 'none';
+                
             }
         });
     </script>
