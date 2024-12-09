@@ -50,7 +50,7 @@ public class Registration extends HttpServlet {
 		try {
 			//connecting to database 
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/RecipeApp", "root", "jg112233");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/RecipeApp", "root", "root");
 			
 			//check to see if username already exists
             String checkQuery = "SELECT id FROM users WHERE username = ?";

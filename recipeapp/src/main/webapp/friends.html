@@ -3,77 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friends</title>
     <link rel="stylesheet" href="css/friends.css">
     <link rel="stylesheet" href="css/mainpage.css">
-    <title>Friends</title>
+    <style>
+        /* Add any necessary CSS here or keep it in your external stylesheets */
+    </style>
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchFriendsData();
+
+            // Attach event listeners
+            document.getElementById('searchBtn').addEventListener('click', searchFriends);
+        });
+
+        // Fetch friends data from the server
+        function fetchFriendsData() {
+            fetch('FriendsServlet', {
+                method: 'GET',
+                credentials: 'include'
+            })
+            .then(response => {
+                if (response.status === 401) {
+                    alert('You must be logged in to view friends.');
+                    window.location.href = 'Login.html';
+                    throw new Error('Unauthorized');
+                }
+                return response.json();
+            })
+            .then(data => {
+                populateFriendsSection(data);
+            })
+            .catch(error => console.error('Error fetching friends data:', error));
+        }
+
+        // Populate friends, suggested friends, pending requests, and mutual friends
+        function populateFriendsSection(data) {
+            // Update username
+            document.getElementById('loggedInUsername').textContent = data.username;
+
+            // Populate Friends List
+            const friendsList = document.getElementById('friendsList');
+            friendsList.innerHTML = '';
+            data.friends.forEach(friend => {
+                const li = createFriendListItem(friend, true);
+                friendsList.appendChild(li);
+            });
+
+            // Populate Suggested Friends
+            const suggestedFriends = document.getElementById('suggestedFriends');
+            suggestedFriends.innerHTML = '';
+            data.suggested.forEach(s => {
+                const li = createSuggestedFriendListItem(s);
+                suggestedFriends.appendChild(li);
+            });
+
+            // Populate Pending Requests
+            const pendingRequests = document.getElementById('pendingRequests');
+            pendingRequests.innerHTML = '';
+            data.pending.forEach(p => {
+                const li = createPendingRequestListItem(p);
+                pendingRequests.appendChild(li);
+            });
+
+            // Populate Mutual Friends
+            const mutualFriendsList = document.getElementById('mutualFriendsList');
+            mutualFriendsList.innerHTML = '';
+            data.mutual.forEach(m => {
+                const li = document.createElement('li');
+                li.textContent = m;
+                mutualFriendsList.appendChild(li);
+            });
+        }
+
+        // Create Friend List Item
+        function createFriendListItem(username, isFriend) {
+            const li = document.createElement('li');
+            li.classList.add('friend');
+            li.innerHTML = `
+                <img src="assets/pfp.jpg" alt="${username}" class="friend-profile-pic">
+                <span>${username}</span>
+                <div class="friend-actions">
+                    <button class="view-profile-btn" onclick="viewProfile('${username}')">View Profile</button>
+                    <button class="remove-friend-btn" onclick="removeFriend('${username}')">Remove</button>
+                </div>
+            `;
+            return li;
+        }
+
+        // Create Suggested Friend List Item
+        function createSuggestedFriendListItem(username) {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <span>${username}</span>
+                <button class="add-friend-btn" onclick="sendFriendRequest('${username}')">Request</button>
+                <button class="remove-suggested-btn" onclick="removeSuggestedFriend('${username}')">Remove</button>
+            `;
+            return li;
+        }
+
+        // Create Pending Request List Item
+        function createPendingRequestListItem(username) {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <span>${username}</span>
+                <button class="cancel-request-btn" onclick="cancelFriendRequest('${username}')">Cancel</button>
+            `;
+            return li;
+        }
+
         // Search Friends Functionality
         function searchFriends() {
-            const searchBar = document.getElementById('searchBar').value.toLowerCase();
-            const friendsList = document.getElementById('friendsList').getElementsByClassName('friend');
+            const searchTerm = document.getElementById('searchBar').value.toLowerCase();
+            const friends = document.getElementById('friendsList').getElementsByClassName('friend');
 
-            for (let i = 0; i < friendsList.length; i++) {
-                const friendName = friendsList[i].querySelector('span').textContent.toLowerCase();
-                if (friendName.includes(searchBar)) {
-                    friendsList[i].style.display = 'flex';
-                } else {
-                    friendsList[i].style.display = 'none';
-                }
-            }
+            Array.from(friends).forEach(friend => {
+                const friendName = friend.querySelector('span').textContent.toLowerCase();
+                friend.style.display = friendName.includes(searchTerm) ? 'flex' : 'none';
+            });
         }
 
-        // Add to Pending Requests
-        function addToPending(friendName) {
-            const suggestedFriendsList = document.getElementById('suggestedFriends');
-            const pendingRequestsList = document.getElementById('pendingRequests');
-
-            // Find the friend in Suggested Friends
-            const friends = suggestedFriendsList.getElementsByTagName('li');
-            for (let i = 0; i < friends.length; i++) {
-                if (friends[i].textContent.includes(friendName)) {
-                    // Move the friend to Pending Requests
-                    const newFriend = friends[i].cloneNode(true);
-                    const addButton = newFriend.querySelector('button');
-                    addButton.remove(); // Remove the Request button
-                    
-                    // Create a Cancel button for the Pending Request
-                    const cancelButton = document.createElement('button');
-                    cancelButton.textContent = "Cancel";
-                    cancelButton.classList.add('cancel-request-btn');
-                    cancelButton.onclick = function() {
-                        cancelRequest(newFriend);
-                    };
-                    newFriend.appendChild(cancelButton);
-
-                    pendingRequestsList.appendChild(newFriend);
-                    // Remove the friend from Suggested Friends
-                    suggestedFriendsList.removeChild(friends[i]);
-                    break;
-                }
-            }
-        }
-
-        // Cancel Pending Request
-        function cancelRequest(friendElement) {
-            const pendingRequestsList = document.getElementById('pendingRequests');
-            pendingRequestsList.removeChild(friendElement);
-        }
-
-        // Remove Suggested Friend
-        function removeSuggestedFriend(username) {
-            const suggestedFriendsList = document.getElementById('suggestedFriends');
-            const friends = suggestedFriendsList.getElementsByTagName('li');
-            for (let i = 0; i < friends.length; i++) {
-                if (friends[i].textContent.includes(username)) {
-                    // Remove the friend from the list
-                    suggestedFriendsList.removeChild(friends[i]);
-                    break;
-                }
-            }
-            // Optionally, implement backend logic if needed
-        }
-
-        // Function to send a friend request
+        // Send Friend Request
         function sendFriendRequest(username) {
             fetch(`FriendsServlet?action=sendRequest&username=${encodeURIComponent(username)}`, {
                 method: 'POST',
@@ -82,14 +132,17 @@
             .then(response => {
                 if (response.ok) {
                     alert(`Friend request sent to ${username}`);
-                    location.reload();
+                    fetchFriendsData();
                 } else {
-                    alert('Failed to send friend request');
+                    response.json().then(data => {
+                        alert(`Failed to send friend request: ${data.error}`);
+                    });
                 }
-            });
+            })
+            .catch(error => console.error('Error sending friend request:', error));
         }
 
-        // Function to cancel a pending friend request
+        // Cancel Friend Request
         function cancelFriendRequest(username) {
             fetch(`FriendsServlet?action=cancelRequest&username=${encodeURIComponent(username)}`, {
                 method: 'POST',
@@ -98,15 +151,40 @@
             .then(response => {
                 if (response.ok) {
                     alert(`Friend request to ${username} canceled`);
-                    location.reload();
+                    fetchFriendsData();
                 } else {
-                    alert('Failed to cancel friend request');
+                    response.json().then(data => {
+                        alert(`Failed to cancel friend request: ${data.error}`);
+                    });
                 }
-            });
+            })
+            .catch(error => console.error('Error canceling friend request:', error));
+        }
+        
+     // Accept Friend Request
+        function acceptFriendRequest(username) {
+            fetch(`FriendsServlet?action=acceptRequest&username=${encodeURIComponent(username)}`, {
+                method: 'POST',
+                credentials: 'include'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert(`Friend request from ${username} accepted`);
+                    fetchFriendsData(); // Refresh the friends data
+                } else {
+                    response.json().then(data => {
+                        alert(`Failed to accept friend request: ${data.error}`);
+                    });
+                }
+            })
+            .catch(error => console.error('Error accepting friend request:', error));
         }
 
-        // Function to remove a friend
+
+        // Remove Friend
         function removeFriend(username) {
+            if (!confirm(`Are you sure you want to remove ${username} from your friends?`)) return;
+
             fetch(`FriendsServlet?action=removeFriend&username=${encodeURIComponent(username)}`, {
                 method: 'POST',
                 credentials: 'include'
@@ -114,84 +192,45 @@
             .then(response => {
                 if (response.ok) {
                     alert(`${username} removed from friends`);
-                    location.reload();
+                    fetchFriendsData();
                 } else {
-                    alert('Failed to remove friend');
+                    response.json().then(data => {
+                        alert(`Failed to remove friend: ${data.error}`);
+                    });
                 }
-            });
+            })
+            .catch(error => console.error('Error removing friend:', error));
         }
 
-        // Function to view a friend's profile
+        // Remove Suggested Friend
+        function removeSuggestedFriend(username) {
+            if (!confirm(`Are you sure you want to remove ${username} from suggestions?`)) return;
+
+            fetch(`FriendsServlet?action=removeSuggested&username=${encodeURIComponent(username)}`, {
+                method: 'POST',
+                credentials: 'include'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert(`Removed ${username} from suggestions`);
+                    fetchFriendsData();
+                } else {
+                    response.json().then(data => {
+                        alert(`Failed to remove suggested friend: ${data.error}`);
+                    });
+                }
+            })
+            .catch(error => console.error('Error removing suggested friend:', error));
+        }
+
+        // View Profile
         function viewProfile(username) {
-            alert(`Viewing profile of ${username}`); // Replace with navigation if implemented
+            // Implement navigation to the user's profile page
+            window.location.href = `profile.html?username=${encodeURIComponent(username)}`;
         }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // Make an AJAX call to the FriendsServlet to get user and friend info
-            fetch('FriendsServlet', {
-                method: 'GET',
-                credentials: 'include' // so that session is maintained
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Update the logged-in user's username
-                document.getElementById('loggedInUsername').textContent = data.username;
-
-                // Populate friends list
-                const friendsList = document.getElementById('friendsList');
-                friendsList.innerHTML = ''; // Clear any existing content
-                data.friends.forEach(friend => {
-                    const li = document.createElement('li');
-                    li.classList.add('friend');
-                    li.innerHTML = `
-                        <img src="assets/pfp.jpg" alt="${friend.username}" class="friend-profile-pic">
-                        <span>${friend.username}</span>
-                        <div class="friend-actions">
-                            <button class="view-profile-btn" onclick="viewProfile('${friend.username}')">View Profile</button>
-                            <button class="remove-friend-btn" onclick="removeFriend('${friend.username}')">Remove</button>
-                        </div>
-                    `;
-                    friendsList.appendChild(li);
-                });
-
-                // Populate suggested friends list
-                const suggestedFriends = document.getElementById('suggestedFriends');
-                suggestedFriends.innerHTML = ''; // Clear any existing content
-                data.suggested.forEach(s => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <span>${s.username}</span>
-                        <button class="add-friend-btn" onclick="sendFriendRequest('${s.username}')">Request</button>
-                        <button class="remove-suggested-btn" onclick="removeSuggestedFriend('${s.username}')">Remove</button>
-                    `;
-                    suggestedFriends.appendChild(li);
-                });
-
-                // Populate pending friend requests list
-                const pendingRequests = document.getElementById('pendingRequests');
-                pendingRequests.innerHTML = ''; // Clear any existing content
-                data.pending.forEach(p => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <span>${p.username}</span>
-                        <button class="cancel-request-btn" onclick="cancelFriendRequest('${p.username}')">Cancel</button>
-                    `;
-                    pendingRequests.appendChild(li);
-                });
-
-                // Populate mutual friends list
-                const mutualFriendsList = document.getElementById('mutualFriendsList');
-                mutualFriendsList.innerHTML = ''; // Clear any existing content
-                data.mutual.forEach(m => {
-                    const li = document.createElement('li');
-                    li.textContent = m.username;
-                    mutualFriendsList.appendChild(li);
-                });
-            })
-            .catch(error => console.error('Error fetching friends data:', error));
-        });
     </script>
 </head>
+
 <body>
     <!-- Top Navigation -->
     <div class="topnav">
@@ -203,7 +242,7 @@
         </div>
         <div class="center-container">
             <input type="text" id="searchBar" placeholder="Search for friends...">
-            <button id="searchBtn" onclick="searchFriends()">Search</button>
+            <button id="searchBtn">Search</button>
         </div>
     </div>
 

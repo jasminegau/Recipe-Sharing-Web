@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -52,15 +53,21 @@ public class Login extends HttpServlet {
 		//handle login request
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost/RecipeApp", "root", "jg112233");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost/RecipeApp", "root", "root");
 			PreparedStatement stmt = con.prepareStatement("SELECT * FROM users WHERE username = ?");
 			stmt.setString(1, username);
 	        ResultSet rs = stmt.executeQuery();
 	        if (rs.next()) {
 	        	if (rs.getString("password").equals(password)) {
-	        		//successful login
-	        		out.print(getUserInfo(username, con, rs));
+	        	    // Successful login
+	        	    // Create a session and set attributes
+	        	    HttpSession session = request.getSession();
+	        	    session.setAttribute("userId", rs.getInt("id"));
+	        	    session.setAttribute("username", rs.getString("username"));
+	        	    
+	        	    out.print(getUserInfo(username, con, rs));
 	        	}
+
 	        	else {
 	        		Error err = new Error("invalid password");
 					out.print(gson.toJson(err));
@@ -102,39 +109,38 @@ public class Login extends HttpServlet {
 		}
 	}
 	
-	String getUserInfo(String username, Connection con, ResultSet rs) throws SQLException{
-		
-		//defining variables
-		Gson gson = new Gson();
-		ArrayList<Recipe> recipes = new ArrayList<Recipe>();
-		
-		//parsing recipe id list into recipe objects
-		try {
-			JsonArray recipeIds = gson.fromJson(rs.getString("savedRecipes"), JsonArray.class);
-			if (recipeIds != null)
-			{
-				for (int i = 0; i < recipeIds.size(); i++) {
-					PreparedStatement stmt = con.prepareStatement("SELECT r.id, r.title, r.category, u.username FROM recipes r, users u WHERE r.id = ? AND r.author = u.id");
-					stmt.setInt(1, recipeIds.get(i).getAsInt());
-					ResultSet result = stmt.executeQuery();
-					if (result.next()) {
-						int id = result.getInt("id");
-						String title = result.getString("title");
-						String category = result.getString("category");
-						String author = result.getString("username");
-						recipes.add(new Recipe(id, title, category, "", author));
-					}
-				}
-			}
-		} catch (JsonSyntaxException err) {
-			System.out.println(err);
-		}
-		
-		//creating user object
-		User user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("firstName"), rs.getString("lastName"), recipes);
-		
-		//converting object to json and return string
-		return gson.toJson(user);
+	String getUserInfo(String username, Connection con, ResultSet rs) throws SQLException {
+	    // Defining variables
+	    Gson gson = new Gson();
+	    ArrayList<Recipe> recipes = new ArrayList<Recipe>();
+	    
+	    // Parsing recipe id list into recipe objects
+	    try {
+	        JsonArray recipeIds = gson.fromJson(rs.getString("savedRecipes"), JsonArray.class);
+	        if (recipeIds != null) {
+	            for (int i = 0; i < recipeIds.size(); i++) {
+	                PreparedStatement stmt = con.prepareStatement("SELECT r.id, r.title, r.category, u.username FROM recipes r, users u WHERE r.id = ? AND r.author = u.id");
+	                stmt.setInt(1, recipeIds.get(i).getAsInt());
+	                ResultSet result = stmt.executeQuery();
+	                if (result.next()) {
+	                    int id = result.getInt("id");
+	                    String title = result.getString("title");
+	                    String category = result.getString("category");
+	                    String author = result.getString("username");
+	                    recipes.add(new Recipe(id, title, category, "", author));
+	                }
+	            }
+	        }
+	    } catch (JsonSyntaxException err) {
+	        System.out.println(err);
+	    }
+	    
+	    // Creating user object
+	    User user = new User(rs.getInt("id"), rs.getString("username"), rs.getString("firstName"), rs.getString("lastName"), recipes);
+	    
+	    // Converting object to json and return string
+	    return gson.toJson(user);
 	}
+
 
 }
