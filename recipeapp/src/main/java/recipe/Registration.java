@@ -64,13 +64,14 @@ public class Registration extends HttpServlet {
                 }
 			
 			//insert new user
-	        String sql = "INSERT INTO users (username, firstName, lastName, password) VALUES (?, ?, ?, ?)";
+	        String sql = "INSERT INTO users (username, firstName, lastName, savedRecipes, password) VALUES (?, ?, ?, ?, ?)";
 	        PreparedStatement stmt = conn.prepareStatement(sql);
 	        
             stmt.setString(1, username);
             stmt.setString(2, fname);
             stmt.setString(3, lname);
-            stmt.setString(4, password);
+            stmt.setString(4, "[]");
+            stmt.setString(5, password);
 	        
             int rowsUpdated = stmt.executeUpdate();
             
