@@ -11,6 +11,7 @@ public class RecipeManagement {
 
     public AddRecipes createNewRecipe(Map<String, String> fields) throws IllegalArgumentException, ClassNotFoundException {
         AddRecipes recipe = new AddRecipes(
+        	fields.get("authorId"),
             fields.get("title"),
             fields.get("category"),
             fields.get("instructions"),
@@ -63,3 +64,4 @@ public class RecipeManagement {
         return dbManager.deleteRecipe(recipeId);
     }
 }
+
