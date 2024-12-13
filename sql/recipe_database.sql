@@ -8,14 +8,27 @@ CREATE table users (
    savedRecipes JSON,
    password VARCHAR(50)
 );
-CREATE table recipes (
-	id INT AUTO_INCREMENT PRIMARY KEY,
+-- CREATE table recipes (
+-- 	id INT AUTO_INCREMENT PRIMARY KEY,
+--    title VARCHAR(100),
+--    category VARCHAR(100),
+--    instructions VARCHAR(1000),
+--    author INT,
+--    FOREIGN KEY (author) REFERENCES users(id)
+-- );
+
+CREATE TABLE recipes (
+   id INT AUTO_INCREMENT PRIMARY KEY,
    title VARCHAR(100),
    category VARCHAR(100),
    instructions VARCHAR(1000),
+   ingredients VARCHAR(1000),
+   difficulty VARCHAR(50),
+   time VARCHAR(10),
    author INT,
    FOREIGN KEY (author) REFERENCES users(id)
 );
+
 CREATE TABLE friendships (
    id INT AUTO_INCREMENT PRIMARY KEY,
    user_id INT NOT NULL,
