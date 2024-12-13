@@ -128,8 +128,9 @@ public class Profile extends HttpServlet {
 			}
 			
 			PreparedStatement stmt = con.prepareStatement("SELECT r.id, r.title, r.category, r.instructions, r.author, u.username FROM recipes r, users u WHERE r.author = ? AND r.author = u.id");
-
-			stmt.setInt(1, rs.getInt("id"));
+			int u = getUserId(con, username);
+			System.out.println("user= " + u);
+			stmt.setInt(1, u);
 			ResultSet result = stmt.executeQuery();
 			while (result.next()) {
 				int id = result.getInt("id");
@@ -138,6 +139,7 @@ public class Profile extends HttpServlet {
 				String author = result.getString("username");
 				String instr = result.getString("instructions");
 				recipes2.add(new Recipe(id, title, category, instr, author));
+				System.out.println(recipes2);
 			}
 			
 			friends = getFriends(con, getUserId(con, rs.getString("username")));

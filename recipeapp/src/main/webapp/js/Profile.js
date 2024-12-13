@@ -86,7 +86,8 @@ function getUser(u) {
 			
 			if (t.error)
 			{
-				document.getElementById("u").innerHTML = sessionStorage.getItem("User");
+				document.getElementById("u").innerHTML = "User not found";
+				document.getElementById("add").style.visibility = "hidden";
 			}
 			else{
 				document.getElementById("u").innerHTML = t.username;
@@ -115,7 +116,7 @@ function getUser(u) {
 				cell3.innerHTML = "Category";
 				
 				var table2 = document.getElementById("yr");
-				for (let i = 0; i < t.savedRecipes.length; i++)
+				for (let i = 0; i < t.uploadedRecipes.length; i++)
 				{
 					var row = table2.insertRow(0);
 					var cell1 = row.insertCell(0);
