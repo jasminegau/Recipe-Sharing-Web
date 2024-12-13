@@ -1,6 +1,7 @@
 package recipe;
 
 import java.sql.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class DatabaseManager {
     // Create a new recipe
     public boolean saveRecipe(AddRecipes recipe) throws ClassNotFoundException {
         System.out.println("issue 1");
-        String sql = "INSERT INTO recipes (title, category, instructions, ingredients, difficulty, time) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO recipes (title, category, instructions, ingredients, difficulty, time, author) VALUES (?, ?, ?, ?, ?, ?, ?)";
         Class.forName("com.mysql.cj.jdbc.Driver");  // Load MySQL JDBC driver
         System.out.println("issue #2");
         
@@ -40,7 +41,8 @@ public class DatabaseManager {
                 stmt.setString(4, recipe.getIngredients());
                 stmt.setString(5, recipe.getDifficulty());
                 System.out.println("issue #5");
-                stmt.setString(6, recipe.getTime());  // Ensure 'time' is correctly set
+                stmt.setString(6, recipe.getTime());  
+                stmt.setInt(7,  recipe.getId());
                 
                 // Now execute the statement to insert the data
                 int affectedRows = stmt.executeUpdate();  // <--- Missing part
