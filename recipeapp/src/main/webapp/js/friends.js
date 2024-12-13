@@ -1,4 +1,4 @@
-document.getElementById("sf").style.visibility = "hidden";
+
 
 // Search Friends Functionality
 function searchFriends() {

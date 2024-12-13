@@ -27,6 +27,7 @@ function friend()
 		    		console.log('request failed', error)
 					
 		  	 });
+	window.location.assign('http://localhost:8080/recipeapp/friends.html');
 	
 }
 function rc(n)

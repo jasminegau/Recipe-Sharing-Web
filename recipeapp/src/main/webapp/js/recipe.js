@@ -7,6 +7,7 @@ const registerLink = document.getElementById("register-link");
 const logoutLink = document.getElementById("logout-link");
 const friendsLink = document.getElementById("friends-link");
 const addRecipe = document.getElementById("add-recipe");
+const profile = document.getElementById("profile-link");
 
 fetch(`http://localhost:8080/recipeapp/HandleRecipe?&id=${id}`)
 	.then(response => response.json())
@@ -43,11 +44,13 @@ if ((username = sessionStorage.getItem("User"))) {
    logoutLink.style.display = 'inline';
    friendsLink.style.display = 'inline';
    addRecipe.style.display = 'inline';
+   profile.style.display = 'inline';
 
    // Add functionality to the logout link
    logoutLink.addEventListener('click', () => {
        sessionStorage.removeItem("User");
-       window.location.reload();
+	   window.location.assign("http://localhost:8080/recipeapp/index.html");
+
    });
 }
 else {
@@ -58,6 +61,7 @@ else {
     logoutLink.style.display = 'none';
     friendsLink.style.display = 'none';
     addRecipe.style.display = 'none';
+	profile.style.display = 'none';
 }
 	
 function showRecipe(title, category, instructions, author) {
