@@ -10,6 +10,7 @@
         /* Add any necessary CSS here or keep it in your external stylesheets */
     </style>
     <script>
+    	
         document.addEventListener('DOMContentLoaded', () => {
             fetchFriendsData();
 
@@ -59,23 +60,24 @@
             });
 
             // Populate Pending Requests
-            const pendingRequests = document.getElementById('pendingRequests');
-            pendingRequests.innerHTML = '';
-            data.pending.forEach(p => {
-                const li = createPendingRequestListItem(p);
-                pendingRequests.appendChild(li);
-            });
+            
+            //const pendingRequests = document.getElementById('pendingRequests');
+            //pendingRequests.innerHTML = '';
+            //data.pending.forEach(p => {
+            //    const li = createPendingRequestListItem(p);
+            //    pendingRequests.appendChild(li);
+            //});
 
             // Populate Mutual Friends
-            const mutualFriendsList = document.getElementById('mutualFriendsList');
-            mutualFriendsList.innerHTML = '';
-            data.mutual.forEach(m => {
-                const li = document.createElement('li');
-                li.textContent = m;
-                mutualFriendsList.appendChild(li);
-            });
+            //const mutualFriendsList = document.getElementById('mutualFriendsList');
+            //mutualFriendsList.innerHTML = '';
+            //data.mutual.forEach(m => {
+            //    const li = document.createElement('li');
+            //    li.textContent = m;
+            //    mutualFriendsList.appendChild(li);
+            //});
         }
-
+		
         // Create Friend List Item
         function createFriendListItem(username, isFriend) {
             const li = document.createElement('li');
@@ -93,11 +95,16 @@
 
         // Create Suggested Friend List Item
         function createSuggestedFriendListItem(username) {
+            
             const li = document.createElement('li');
+            li.classList.add('friend');
             li.innerHTML = `
+                <img src="assets/pfp.jpg" alt="${username}" class="friend-profile-pic">
                 <span>${username}</span>
-                <button class="add-friend-btn" onclick="sendFriendRequest('${username}')">Request</button>
-                <button class="remove-suggested-btn" onclick="removeSuggestedFriend('${username}')">Remove</button>
+                <div class="friend-actions">
+                    <button class="view-profile-btn" onclick="viewProfile('${username}')">View Profile</button>
+                    
+                </div>
             `;
             return li;
         }
@@ -121,6 +128,8 @@
                 const friendName = friend.querySelector('span').textContent.toLowerCase();
                 friend.style.display = friendName.includes(searchTerm) ? 'flex' : 'none';
             });
+           
+            
         }
 
         // Send Friend Request
@@ -234,7 +243,7 @@
 <body>
     <!-- Top Navigation -->
     <div class="topnav">
-        <div class="home-img">
+        <div class="home-img" onclick = "window.location.href='http://localhost:8080/recipeapp/index.html'">
             <img src="assets/tt.jpg" alt="Profile Picture">
         </div>
         <div class="profile-name">
@@ -249,11 +258,18 @@
     <div class="layout">
         <!-- Friends Section -->
         <div class="friends-section">
-            <h2>Your Friends</h2>
+            <h2 id = "yf">Your Friends</h2>
             <ul class="friends-list" id="friendsList">
                 <!-- Dynamically populated by JS -->
             </ul>
+             <h3 id = "sf">Suggested Friends</h3>
+            <ul class="suggested-friends" id="suggestedFriends">
+                <!-- Dynamically populated by JS -->
+            </ul>
+            
         </div>
+        
     </div>
+    
 </body>
 </html>

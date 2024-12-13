@@ -342,7 +342,7 @@ public class FriendsServlet extends HttpServlet {
         }
 
         // Insert a new friendship with status 'pending'
-        String insertQuery = "INSERT INTO friendships (user_id, friend_id, status) VALUES (?, ?, 'pending')";
+        String insertQuery = "INSERT INTO friendships (user_id, friend_id, status) VALUES (?, ?, 'accepted')";
         try (PreparedStatement insertStmt = con.prepareStatement(insertQuery)) {
             insertStmt.setInt(1, userId);
             insertStmt.setInt(2, targetUserId);

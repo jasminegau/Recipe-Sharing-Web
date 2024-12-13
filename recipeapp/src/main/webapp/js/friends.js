@@ -1,3 +1,5 @@
+document.getElementById("sf").style.visibility = "hidden";
+
 // Search Friends Functionality
 function searchFriends() {
     const searchBar = document.getElementById('searchBar').value.toLowerCase();
@@ -7,8 +9,12 @@ function searchFriends() {
         const friendName = friendsList[i].querySelector('span').textContent.toLowerCase();
         if (friendName.includes(searchBar)) {
             friendsList[i].style.display = 'flex';
+			
+			
         } else {
             friendsList[i].style.display = 'none';
+			
+			
         }
     }
 }
