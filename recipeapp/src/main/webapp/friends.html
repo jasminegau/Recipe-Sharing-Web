@@ -125,12 +125,17 @@
         function searchFriends() {
             const searchTerm = document.getElementById('searchBar').value.toLowerCase();
             const friends = document.getElementById('friendsList').getElementsByClassName('friend');
+            const suggested = document.getElementById('suggestedFriends').getElementsByClassName('friend');
 
             Array.from(friends).forEach(friend => {
                 const friendName = friend.querySelector('span').textContent.toLowerCase();
                 friend.style.display = friendName.includes(searchTerm) ? 'flex' : 'none';
             });
            
+            Array.from(suggested).forEach(friend => {
+                const friendName = friend.querySelector('span').textContent.toLowerCase();
+                friend.style.display = friendName.includes(searchTerm) ? 'flex' : 'none';
+            });
             
         }
 
