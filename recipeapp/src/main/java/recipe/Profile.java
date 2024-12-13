@@ -206,7 +206,7 @@ public class Profile extends HttpServlet {
         }
 
         // Insert a new friendship with status 'pending'
-        String insertQuery = "INSERT INTO friendships (user_id, friend_id, status) VALUES (?, ?, 'pending')";
+        String insertQuery = "INSERT INTO friendships (user_id, friend_id, status) VALUES (?, ?, 'accepted')";
         try (PreparedStatement insertStmt = con.prepareStatement(insertQuery)) {
             insertStmt.setInt(1, userId);
             insertStmt.setInt(2, targetUserId);
@@ -228,7 +228,7 @@ public class Profile extends HttpServlet {
 	 
 	 private ArrayList<String> getFriends(Connection con, int userId, String username) throws SQLException {
 		 System.out.println(userId);
-	        String query = "SELECT  f.user_id, f.friend_id, u.username from friendships f JOIN users u ON (f.user_id = u.id OR f.friend_id = u.id) where (f.user_id = ? or f.friend_id = ?) and u.username != ?;";
+	        String query = "SELECT  f.user_id, f.friend_id, u.username from friendships f JOIN users u ON (f.user_id = u.id) where (f.user_id = ? or f.friend_id = ?) and u.username != ?;";
 	                       
 	        ArrayList<String> friends = new ArrayList<>();
 	        try (PreparedStatement stmt = con.prepareStatement(query)) {
