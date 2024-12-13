@@ -142,7 +142,7 @@ public class Profile extends HttpServlet {
 				System.out.println(recipes2);
 			}
 			
-			friends = getFriends(con, getUserId(con, rs.getString("username")));
+			friends = getFriends(con, getUserId(con, rs.getString("username")), username);
 			
 		} catch (JsonSyntaxException err) {
 			System.out.println(err);
@@ -226,18 +226,19 @@ public class Profile extends HttpServlet {
 	        return null;
 	    }
 	 
-	 private ArrayList<String> getFriends(Connection con, int userId) throws SQLException {
+	 private ArrayList<String> getFriends(Connection con, int userId, String username) throws SQLException {
 		 System.out.println(userId);
-	        String query = "SELECT  f.user_id, f.friend_id, u.username from friendships f JOIN users u ON (f.user_id = u.id) where f.user_id = ? or f.friend_id = ?;";
+	        String query = "SELECT  f.user_id, f.friend_id, u.username from friendships f JOIN users u ON (f.user_id = u.id OR f.friend_id = u.id) where (f.user_id = ? or f.friend_id = ?) and u.username != ?;";
 	                       
 	        ArrayList<String> friends = new ArrayList<>();
 	        try (PreparedStatement stmt = con.prepareStatement(query)) {
 	            stmt.setInt(1, userId);
-	            stmt.setInt(2, userId); 
+	            stmt.setInt(2, userId);
+	            stmt.setString(3, username);
 	            try (ResultSet rs = stmt.executeQuery()) {
 	                while (rs.next()) {
-	                	
-	                    friends.add(rs.getString("username"));
+	                	friends.add(rs.getString("username"));
+	                    
 	                }
 	            }
 	        }

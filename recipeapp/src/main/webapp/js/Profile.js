@@ -134,7 +134,7 @@ function getUser(u) {
 				cell3.innerHTML = "Name";
 				cell4.innerHTML = "Category";
 				
-				if(sessionStorage.getItem("User") && (t.friends.includes(sessionStorage.getItem("User")) || t.friends.includes(t.username)))
+				if(sessionStorage.getItem("User") && t.friends.includes(sessionStorage.getItem("User")))
 				{
 					
 					document.getElementById("add").style.visibility = "hidden";	
