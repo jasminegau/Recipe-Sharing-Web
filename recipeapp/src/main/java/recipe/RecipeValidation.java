@@ -2,6 +2,7 @@ package recipe;
 
 import java.io.IOException;
 
+
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,6 +22,7 @@ public class RecipeValidation extends HttpServlet {
     String instructions = " "; 
     String difficulty = " "; 
     String time = " ";
+    String uid = " ";
 
     protected void service(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -34,8 +36,10 @@ public class RecipeValidation extends HttpServlet {
         instructions = request.getParameter("instructions");
         difficulty = request.getParameter("difficulty");
         time = request.getParameter("time");
+        //--------------------------------------
+        uid = request.getParameter("uid");
         
-        System.out.println(recipeName + cuisine + ingredients + instructions + difficulty + time);
+        System.out.println(recipeName + cuisine + ingredients + instructions + difficulty + time + uid);
         	
         System.out.println("got here 1.5");
         
@@ -68,6 +72,8 @@ public class RecipeValidation extends HttpServlet {
         recipe.put("ingredients", ingredients);
         recipe.put("difficulty", difficulty);
         recipe.put("time", time);
+        recipe.put("authorId", uid);
+        
         
         System.out.println("got here 4");
         try {
