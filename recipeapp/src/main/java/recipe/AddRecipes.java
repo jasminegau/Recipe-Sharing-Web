@@ -13,7 +13,8 @@ public class AddRecipes{
 	
 	public AddRecipes() {}
 	
-	public AddRecipes(String title, String category, String instructions, String ingredients, String difficulty, String time) {
+	public AddRecipes(String id, String title, String category, String instructions, String ingredients, String difficulty, String time) {
+		this.id = Integer.parseInt(id);
 		this.title = title; 
 		this.category = category; 
 		this.instructions = instructions; 
@@ -81,6 +82,7 @@ public class AddRecipes{
 	
 	
 	public boolean validateRecipeFields() {
+		if (id == null) return false; 
 		if (title == null || title.trim().isEmpty()) return false; 
 		if (category == null || category.trim().isEmpty()) return false; 
 		if (instructions == null || instructions.trim().isEmpty()) return false; 
